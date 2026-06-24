@@ -1,5 +1,7 @@
 library photo_view_gallery;
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:photo_view/photo_view.dart'
@@ -232,16 +234,26 @@ class _PhotoViewGalleryState extends State<PhotoViewGallery> {
     // Enable corner hit test
     return PhotoViewGestureDetectorScope(
       axis: widget.scrollDirection,
-      child: PageView.builder(
-        reverse: widget.reverse,
-        controller: _controller,
-        onPageChanged: widget.onPageChanged,
-        itemCount: itemCount,
-        itemBuilder: _buildItem,
-        scrollDirection: widget.scrollDirection,
-        physics: widget.scrollPhysics,
-        allowImplicitScrolling: widget.allowImplicitScrolling,
-        pageSnapping: widget.pageSnapping,
+      child: ScrollConfiguration(
+        behavior: const ScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown,
+          },
+        ),
+        child: PageView.builder(
+          reverse: widget.reverse,
+          controller: _controller,
+          onPageChanged: widget.onPageChanged,
+          itemCount: itemCount,
+          itemBuilder: _buildItem,
+          scrollDirection: widget.scrollDirection,
+          physics: widget.scrollPhysics,
+          allowImplicitScrolling: widget.allowImplicitScrolling,
+          pageSnapping: widget.pageSnapping,
+        ),
       ),
     );
   }
